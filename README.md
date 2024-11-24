@@ -26,11 +26,11 @@ This is a **console-based movie ticket booking application** designed to simplif
 
 1. **Clone the repository**:
     ```bash
-    git clone https://github.com/your-username/movie-ticket-booking.git
+    git clone https://github.com/ravi6174/MovieTicketBooking
     ```
 2. **Navigate to the directory**:
     ```bash
-    cd movie-ticket-booking
+    cd MovieTicketBooking
     ```
 3. **Run the application**:
     Open the application in your preferred IDE (e.g., IntelliJ, Eclipse) and run the main class.
