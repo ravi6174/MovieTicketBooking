@@ -17,7 +17,6 @@ public class Shows {
         return new Shows(time);
     }
 
-
     static int viewSeats(String[][] obj){
         System.out.println();
         int c=0;
@@ -50,7 +49,6 @@ public class Shows {
         return no_of_booked_seats;
     }
 
-
     void bookTickets(int[] booking_details){
         try {
             Scanner sc=new Scanner(System.in);
@@ -66,127 +64,102 @@ public class Shows {
                 bookTickets(booking_details);
             }
             else{
-                            
+                System.out.println(Main.clear); 
+
+                Shows selected_show=null;
+                switch (booking_details[3]) {
+                    case 1:
+                        selected_show=Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show1;
+                        break;
+                    case 2:
+                        selected_show=Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show2;               
+                        break;
+                    case 3:
+                        selected_show=Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show3;              
+                        break;
+                    case 4:
+                        selected_show=Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show4;
+                        break;
+                    default:
+                        System.out.println(Main.red+"Something went wrong"+Main.reset);
+                        new Audience().loggedIn();
+                        break;
+                }
+
+                String[][] tempSeating = new String[7][10];
+
+                //copying seat data from original to temp to keep selected seats updated
+                for (int i = 0; i < tempSeating.length; i++) {
+                    for (int j = 0; j < tempSeating.length; j++) {
+                        tempSeating[i][j]=selected_show.seating[i][j];
+                    }
+                }
+                             
                 //conatins seats numbers in a1,a2 format, used for creating bookedtickets object
                 ArrayList<String> seat_numbers=new ArrayList<String>();
 
-                //this is used to store all people seating data at i,i+1 index
-                //eg A9 seat is stored as A at 0 index and 9 at 1 index
-                ArrayList<Integer> allseatingdetails=new ArrayList<Integer>();
-
-                System.out.println(Main.clear);       
-
                 for (int i = 0; i < nooftickets; i++) {
                     System.out.println();
+                    System.out.println(Main.clear);
                     System.out.println("Select seat for person "+(i+1));
 
                     //one person seating details
-                    int[] seating_detils=Audience.takeSeatingdetails(booking_details);
+                    int[] seating_detils=new Shows().takeSeatingdetails(tempSeating);
 
-                    //adding single person seating details to all people details
-                    allseatingdetails.add(seating_detils[0]);
-                    allseatingdetails.add(seating_detils[1]);
+                    //adding username at selected place
+                    tempSeating[seating_detils[0]][seating_detils[1]]=Main.user.username;
 
-                    Shows selected_show=null;
-
-                    switch (booking_details[3]) {
-                        case 1:
-                            selected_show=Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show1;
-                            break;
-                        case 2:
-                            selected_show=Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show2;               
-                            break;
-                        case 3:
-                            selected_show=Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show3;              
-                            break;
-                        case 4:
-                            selected_show=Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show4;
-                            break;
-                        default:
-                            System.out.println(Main.red+"Something went wrong"+Main.reset);
-                            new Audience().loggedIn();
-                            break;
-                    }
-
-                    if(selected_show.seating[seating_detils[0]][seating_detils[1]]!=null){
-                        System.out.println(Main.red+"Seat already booked by others"+Main.reset);
-                        seating_detils=Audience.takeSeatingdetails(booking_details);
-
-                    }
-                    //System.out.println(seat_num);
-        
-                    switch (booking_details[3]) {
-                        case 1:
-                            Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show1.seating[seating_detils[0]][seating_detils[1]]=Main.user.username;
-                            break;
-                        case 2:
-                            Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show2.seating[seating_detils[0]][seating_detils[1]]=Main.user.username;               
-                            break;
-                        case 3:
-                            Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show3.seating[seating_detils[0]][seating_detils[1]]=Main.user.username;              
-                            break;
-                        case 4:
-                            Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show4.seating[seating_detils[0]][seating_detils[1]]=Main.user.username;
-                            break;
-                        default:
-                            System.out.println(Main.red+"Something went wrong"+Main.reset);
-                            new Audience().loggedIn();
-                            break;
-                        
-                    }   
+                    //converting index to seat numbers
                     String seat_num=((char)(seating_detils[0]+65))+""+(seating_detils[1]+1);
                     seat_numbers.add(seat_num);   
                 }
-                        
 
-                    //------------------------------------------------------------------
-                    // payment
+                // payment
                     
                 System.out.println(Main.clear);
-
                 int totalamount=Wallet.totalamount(nooftickets);
 
                 if(totalamount>Database.audiencelist.get(Main.audienceno).getBal()){
                     System.out.println();
                     System.out.println(Main.red+"Insufficient Balance. Please recharge your Wallet"+Main.reset);
-                    for (int i = 0; i < allseatingdetails.size()/2; i++) {
+                    System.out.println();
+                    new Audience().loggedIn();
+                }
+                else{
+                    int status=payment(totalamount);
+
+                    if(status==1){
+
+                        //updating seating array
                         switch (booking_details[3]) {
                             case 1:
-                                Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show1.seating[allseatingdetails.get(2*i)][allseatingdetails.get((2*i)+1)]=null;
+                                Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show1.seating=tempSeating;
                                 break;
                             case 2:
-                                Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show2.seating[allseatingdetails.get(2*i)][allseatingdetails.get((2*i)+1)]=null;               
+                                Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show2.seating=tempSeating;               
                                 break;
                             case 3:
-                                Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show3.seating[allseatingdetails.get(2*i)][allseatingdetails.get((2*i)+1)]=null;              
+                                Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show3.seating=tempSeating;              
                                 break;
                             case 4:
-                                Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show4.seating[allseatingdetails.get(2*i)][allseatingdetails.get((2*i)+1)]=null;
+                                Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show4.seating=tempSeating;
                                 break;
                             default:
                                 System.out.println(Main.red+"Something went wrong"+Main.reset);
                                 new Audience().loggedIn();
                                 break;
-                            
-                        }   
-                    }
-                    System.out.println();
-                    new Audience().loggedIn();
+                        }
 
-                    //clearing booked tickets 
-                    
-                }
-                else{
-                    //System.out.println(Main.clear);
-                    // System.out.println("You need to pay: "+totalamount);
-                    // System.out.println("1.continue");
-                    // System.out.println("2.Back to login menu");
-                    // System.out.print("Enter a option: ");
-                    // String opt=sc.next();
-
-                    int status=payment(totalamount);
-
-                    if(status==1){
+                        System.out.println(Main.clear);
+                        User.paymentAnimation();
+            
+                        //debiting amount from audience
+                        int current_balance=Database.audiencelist.get(Main.audienceno).getBal();
+                        Database.audiencelist.get(Main.audienceno).setBal(current_balance-totalamount);
+            
+                        //crediting amount to theater
+                        int theater_curr_bal=Database.theaterlist.get(Audience.selectedtheater).getBal();
+                        Database.theaterlist.get(Audience.selectedtheater).setBal(theater_curr_bal+totalamount);
 
                         //create a transaction object and adding to db
                         String booked_theater_username=Database.theaterlist.get(Audience.selectedtheater).username;
@@ -209,34 +182,12 @@ public class Shows {
 
                     else if(status==2){                  
                         System.out.println(Main.clear);
-                        //clearing booked tickets
-                        for (int i = 0; i < nooftickets; i++) {
-                            switch (booking_details[3]) {
-                                case 1:
-                                    Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show1.seating[allseatingdetails.get(2*i)][allseatingdetails.get((2*i)+1)]=null;
-                                    break;
-                                case 2:
-                                    Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show2.seating[allseatingdetails.get(2*i)][allseatingdetails.get((2*i)+1)]=null;               
-                                    break;
-                                case 3:
-                                    Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show3.seating[allseatingdetails.get(2*i)][allseatingdetails.get((2*i)+1)]=null;              
-                                    break;
-                                case 4:
-                                    Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show4.seating[allseatingdetails.get(2*i)][allseatingdetails.get((2*i)+1)]=null;
-                                    break;
-                                default:
-                                    System.out.println(Main.red+"Something went wrong"+Main.reset);
-                                    new Audience().loggedIn();
-                                    break;
-                                
-                            }   
-                        }
                         new Audience().loggedIn();
 
                     }
 
-                    }
                 }
+            }
         }
         catch (Exception e) {
             System.out.println(Main.clear);
@@ -245,7 +196,7 @@ public class Shows {
         }
         
     }
- 
+
     static int payment(int totalamount){
         System.out.println("You need to pay: "+totalamount);
         System.out.println("1.continue");
@@ -255,16 +206,6 @@ public class Shows {
 
     
         if(opt.equals("1")){                  
-            System.out.println(Main.clear);
-            User.paymentAnimation();
-
-            //debiting amount from audience
-            int current_balance=Database.audiencelist.get(Main.audienceno).getBal();
-            Database.audiencelist.get(Main.audienceno).setBal(current_balance-totalamount);
-
-            //crediting amount to theater
-            int theater_curr_bal=Database.theaterlist.get(Audience.selectedtheater).getBal();
-            Database.theaterlist.get(Audience.selectedtheater).setBal(theater_curr_bal+totalamount);
             return 1;
             
         }
@@ -278,6 +219,64 @@ public class Shows {
             System.out.println();
             return payment(totalamount);
         }
+    }
+
+    int[] takeSeatingdetails(String[][] seating){
+        try {
+            Scanner sc=new Scanner(System.in);
+            int row=0;
+            int col=0;
+            System.out.println();
+            System.out.println(Main.purple+"  -----------------------------------------");
+            System.out.println("  -------------               -------------");
+            System.out.println("  .....        This is screen         ....."+Main.reset);
+            int seats_booked=Shows.viewSeats(seating);
+            System.out.println(Main.red+"Booked: "+Main.reset+seats_booked+Main.green+"   Available: "+Main.reset+(70-seats_booked));
+
+            System.out.println();
+            System.out.println(Main.red+"X"+Main.reset+" - Not Available");
+            System.out.println();
+            System.out.print("Enter row alphabet: ");
+            char rowinchar=sc.next().charAt(0);
+            if(rowinchar >=97&&rowinchar<=122){
+                rowinchar-=32;
+            }
+
+            row=(int)(rowinchar-65);
+            if(0<=row&&row<=6){
+                System.out.print("Enter column number: ");
+                try {
+                    int coll=sc.nextInt();
+                    if(1<=coll&&coll<=10){
+                        col=coll-1;
+                    }
+                    else{
+                        System.out.println(Main.red+"Invalid column"+Main.reset);
+                        return takeSeatingdetails(seating);           
+                    }
+                    
+                } 
+                catch (Exception e) {
+                    System.out.println(Main.red+"Invalid column"+Main.reset);
+                    return takeSeatingdetails(seating);
+                }
+            }
+            else{
+                System.out.println(Main.red+"Invalid row"+Main.reset);
+                return takeSeatingdetails(seating);
+            }
+            if(seating[row][col]!=null){
+                    System.out.println(Main.red+"Seat already booked by others"+Main.reset);
+                    return takeSeatingdetails(seating);
+            }
+            return new int[]{row,col};
+
+        } 
+        catch (Exception e) {
+            System.out.println(Main.clear);
+            System.out.println(Main.clear+"Something went wrong at taking seat number"+Main.reset);
+            return takeSeatingdetails(seating);
+        } 
     }
 
 }

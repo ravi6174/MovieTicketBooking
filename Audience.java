@@ -352,82 +352,6 @@ class Audience extends User {
         }
     }
 
-    static int[] takeSeatingdetails(int[] booking_details){
-        try {
-            int showno=booking_details[3];
-        Scanner sc=new Scanner(System.in);
-        int row=0;
-        int col=0;
-        System.out.println();
-        System.out.println(Main.purple+"  -----------------------------------------");
-        System.out.println("  -------------               -------------");
-        System.out.println("  .....        This is screen         ....."+Main.reset);
-       int seats_booked=0; 
-       switch (showno) {
-            case 1:
-                seats_booked=Shows.viewSeats(Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show1.seating);
-                System.out.println(Main.red+"Booked: "+Main.reset+seats_booked+Main.green+"   Available: "+Main.reset+(70-seats_booked));
-                break;
-            case 2:
-                seats_booked=Shows.viewSeats(Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show2.seating);               
-                System.out.println(Main.red+"Booked: "+Main.reset+seats_booked+Main.green+"   Available: "+Main.reset+(70-seats_booked));
-                break;
-            case 3:
-                seats_booked=Shows.viewSeats(Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show3.seating);              
-                System.out.println(Main.red+"Booked: "+Main.reset+seats_booked+Main.green+"   Available: "+Main.reset+(70-seats_booked));
-                break;
-            case 4:
-                seats_booked=Shows.viewSeats(Database.theaterlist.get(booking_details[0]).movieslist.get(booking_details[1]).noofdays.get(booking_details[2]).show4.seating);
-                System.out.println(Main.red+"Booked: "+Main.reset+seats_booked+Main.green+"   Available: "+Main.reset+(70-seats_booked));
-                break;
-            default:
-            new Audience().loggedIn();
-            break;
-        }
-        System.out.println();
-        System.out.println(Main.red+"X"+Main.reset+" - Not Available");
-        System.out.println();
-        System.out.print("Enter row alphabet: ");
-        char rowinchar=sc.next().charAt(0);
-        if(rowinchar >=97&&rowinchar<=122){
-            rowinchar-=32;
-        }
-
-        row=(int)(rowinchar-65);
-        if(0<=row&&row<=6){
-            System.out.print("Enter column number: ");
-            try {
-                int coll=sc.nextInt();
-                if(1<=coll&&coll<=10){
-                    col=coll-1;
-                }
-                else{
-                    System.out.println(Main.red+"Invalid column"+Main.reset);
-                    return takeSeatingdetails(booking_details);           
-                }
-                
-            } catch (Exception e) {
-                System.out.println(Main.red+"Invalid column"+Main.reset);
-                return takeSeatingdetails(booking_details);
-            }
-
-        }
-        else{
-            System.out.println(Main.red+"Invalid row"+Main.reset);
-            return takeSeatingdetails(booking_details);
-        }
-        return new int[]{row,col};
-
-        } 
-        catch (Exception e) {
-            System.out.println(Main.clear);
-            System.out.println(Main.clear+"Something went wrong at taking seat number"+Main.reset);
-            return takeSeatingdetails(booking_details);
-        }
-        
-    }
-
-
     static void viewBookedHistory(){
         System.out.println(Main.clear);
         int cc=0;
@@ -469,12 +393,12 @@ class Audience extends User {
         System.out.println(Main.clear);
         System.out.println(Main.yellow+"       ---PROFILE---"+Main.reset);
         System.out.println();
-        System.out.println("Name           :"+Main.purple+this.name+Main.reset);
-        System.out.println("Username       :"+Main.purple+this.username+Main.reset);
-        System.out.println("Email-id       :"+Main.purple+this.email+Main.reset);
-        System.out.println("Mobile         :"+Main.purple+this.phonenumber+Main.reset);
-        System.out.println("Age            :"+Main.purple+this.age+Main.reset);
-        System.out.println("Wallet balance :"+Main.purple+this.getBal()+Main.reset);
+        System.out.println("Name           : "+Main.purple+this.name+Main.reset);
+        System.out.println("Username       : "+Main.purple+this.username+Main.reset);
+        System.out.println("Email-id       : "+Main.purple+this.email+Main.reset);
+        System.out.println("Mobile         : "+Main.purple+this.phonenumber+Main.reset);
+        System.out.println("Age            : "+Main.purple+this.age+Main.reset);
+        System.out.println("Wallet balance : "+Main.purple+this.getBal()+Main.reset);
     }
 
     void updateProfile(){
