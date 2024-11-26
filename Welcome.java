@@ -44,6 +44,7 @@ public class Welcome {
                     //System.exit(0);
                     break;
                 default:
+                    System.out.println(Main.clear);
                     System.out.println(Main.red+"Invalid Input"+Main.reset);
                     welcome();
                     break;
@@ -82,6 +83,7 @@ public class Welcome {
                     welcome();
                     break;    
                 default:
+                    System.out.println(Main.clear);
                     System.out.println(Main.red+"Invalid Input"+Main.reset);
                     register();
                     break;
@@ -145,10 +147,12 @@ public class Welcome {
             int opt=sc.nextInt();
             switch (opt) {
                 case 1:
+                    System.out.println(Main.clear);
                     User obj=new Theaters();
                     obj.forgotPassword();
                     break;
                 case 2:
+                    System.out.println(Main.clear);
                     User obj2=new Audience();
                     obj2.forgotPassword();
                     break;
@@ -158,6 +162,7 @@ public class Welcome {
                     new Welcome().welcome();
                     break;
                 default:
+                    System.out.println(Main.clear);
                     System.out.println(Main.red+"Invalid Input"+Main.reset);
                     forgot_Password();
                     break;
