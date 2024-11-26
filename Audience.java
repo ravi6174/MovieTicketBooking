@@ -20,7 +20,6 @@ class Audience extends User {
 
     }
     public void forgotPassword(){
-        System.out.println(Main.clear);
         System.out.print("Enter your username: ");
         String username=sc.next();
         System.out.print("Enter your Email Id: ");
@@ -63,7 +62,6 @@ class Audience extends User {
 
     }
     public void register(){
-       System.out.println(Main.clear);
         System.out.println(Main.purple+"-------Audience Registration-------"+Main.reset);
         try {
                 System.out.print("Enter username: ");
@@ -97,13 +95,13 @@ class Audience extends User {
                 new Welcome().welcome();
         } catch (Exception e) {
             sc.nextLine();
+            System.out.println(Main.clear);
             System.out.println(Main.red+"Invalid Input"+Main.reset);
             register();
         }
     }
 
     void login(){
-        System.out.println(Main.clear);
         System.out.println(Main.purple+"-------Audience Login-------"+Main.reset);
         try {
             System.out.print("Enter your username: ");
@@ -149,7 +147,6 @@ class Audience extends User {
 
 
     public void changePassword(){
-        System.out.println(Main.clear);
         System.out.print("Enter your old password: ");
         String oldpass=sc.next();
         System.out.print("Enter your Email id: ");
@@ -324,6 +321,7 @@ class Audience extends User {
                     int show=sc.nextInt();
                     booking_details[3]=show;
 
+                    //stage after selecting Theater,movie,date and show
                     new Shows().bookTickets(booking_details);
                 }
                 else if(opt.equals("2")){

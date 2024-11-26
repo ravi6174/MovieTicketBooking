@@ -104,12 +104,12 @@ public class Shows {
                     System.out.println("Select seat for person "+(i+1));
 
                     //one person seating details
-                    int[] seating_detils=new Shows().takeSeatingdetails(tempSeating);
+                    int[] seating_detils=takeSeatingdetails(tempSeating);
 
                     //adding username at selected place
                     tempSeating[seating_detils[0]][seating_detils[1]]=Main.user.username;
 
-                    //converting index to seat numbers
+                    //converting index to seat numbers -> 0,0 to A1 | 6,3 to G4
                     String seat_num=((char)(seating_detils[0]+65))+""+(seating_detils[1]+1);
                     seat_numbers.add(seat_num);   
                 }
@@ -203,13 +203,10 @@ public class Shows {
         System.out.println("2.Back to login menu");
         System.out.print("Enter a option: ");
         String opt=sc.next();
-
-    
         if(opt.equals("1")){                  
             return 1;
             
         }
-
         else if(opt.equals("2")){
             return 2;
         }                
@@ -221,7 +218,7 @@ public class Shows {
         }
     }
 
-    int[] takeSeatingdetails(String[][] seating){
+    static int[] takeSeatingdetails(String[][] seating){
         try {
             Scanner sc=new Scanner(System.in);
             int row=0;

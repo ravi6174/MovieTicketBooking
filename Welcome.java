@@ -25,12 +25,15 @@ public class Welcome {
             int opt=sc.nextInt();
             switch (opt) {
                 case 1:
+                    System.out.println(Main.clear);
                     register();
                     break;
                 case 2:
+                    System.out.println(Main.clear);
                     login();
                     break;
                 case 3:
+                    System.out.println(Main.clear);
                     forgot_Password();
                     break;
                 case 4:
@@ -55,7 +58,6 @@ public class Welcome {
 	}
 
     void register(){
-        System.out.println(Main.clear);
         System.out.println(Main.purple+"-------REGISTRATION-------"+Main.reset);
         try {
             System.out.println("1.Register as Theater Owner");
@@ -96,8 +98,6 @@ public class Welcome {
 
     
     void login(){
-        System.out.println(Main.clear);
-
         System.out.println(Main.purple+"-------LOGIN-------"+Main.reset);
         try {
             System.out.println("1.Login as Theater");
@@ -107,10 +107,12 @@ public class Welcome {
             int opt=sc.nextInt();
             switch (opt) {
                 case 1:
+                    System.out.println(Main.clear);
                     User obj=new Theaters();
                     obj.login();
                     break;
                 case 2:
+                    System.out.println(Main.clear);
                     User obj2=new Audience();
                     obj2.login();
                     break;
@@ -134,8 +136,6 @@ public class Welcome {
     }
 
     static void forgot_Password(){
-        System.out.println(Main.clear);
-
         System.out.println(Main.purple+"-------LOGIN-------"+Main.reset);
         try {
             System.out.println("1.Forgot Password - Theater");
